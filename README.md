@@ -2,6 +2,10 @@
 
 Light-weight WebDAV temporary storage server, intended for use as artifact storage for GitHub Actions.
 
+[![Docker Image Version](https://img.shields.io/docker/v/kekyo/nginx-webdav-temporary.svg?label=docker)](https://hub.docker.com/r/kekyo/nginx-webdav-temporary/tags)
+
+---
+
 For the Japanese version, see [README_ja.md](./README_ja.md).
 
 ## What is this?
@@ -198,7 +202,7 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/%n.ctr-id
-ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --rm --sdnotify=conmon --replace -p 8080:8080 -e WEBDAV_USERNAME=*************** -e WEBDAV_PASSWORD=*************** -e WEBDAV_CLEAR_STORAGE_ON_STARTUP=true -v /storage0/temp_artifacts:/var/lib/webdav -d --name nginx-webdav-temporary nginx-webdav-temporary:test
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --rm --sdnotify=conmon --replace -p 8080:8080 -e WEBDAV_USERNAME=*************** -e WEBDAV_PASSWORD=*************** -e WEBDAV_CLEAR_STORAGE_ON_STARTUP=true -v /storage0/temp_artifacts:/var/lib/webdav -d --name nginx-webdav-temporary docker.io/kekyo/nginx-webdav-temporary:latest
 ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
 ExecStopPost=/usr/bin/podman rm -f --ignore --cidfile=%t/%n.ctr-id
 Type=notify
