@@ -76,6 +76,21 @@ podman run -d \
 
 `WEBDAV_USERNAME` と `WEBDAV_PASSWORD` は必須です。未指定だとコンテナ起動時に失敗します。
 
+起動時に `/var/lib/webdav` 配下の既存ファイルをすべて削除したい場合は、`WEBDAV_CLEAR_STORAGE_ON_STARTUP=true` を指定してください。
+
+```bash
+podman run -d \
+  --name temp-storage-nginx-webdav \
+  -p 8080:8080 \
+  -e WEBDAV_USERNAME=storage-user \
+  -e WEBDAV_PASSWORD=storage-pass \
+  -e WEBDAV_CLEAR_STORAGE_ON_STARTUP=true \
+  -v "$(pwd)/data:/var/lib/webdav" \
+  temp-storage-nginx-webdav:test
+```
+
+このオプションを有効にすると、コンテナ起動時にストレージルート自体は残したまま、その配下のファイルとディレクトリを削除します。
+
 ホスト側ディレクトリを SELinux 環境で bind mount する場合は、必要に応じて `:Z` を付けてください。
 
 ```bash

@@ -74,6 +74,21 @@ podman run -d \
 
 `WEBDAV_USERNAME` and `WEBDAV_PASSWORD` are required. The container exits during startup if either one is missing.
 
+If you want to clear all existing files under `/var/lib/webdav` on startup, set `WEBDAV_CLEAR_STORAGE_ON_STARTUP=true`.
+
+```bash
+podman run -d \
+  --name temp-storage-nginx-webdav \
+  -p 8080:8080 \
+  -e WEBDAV_USERNAME=storage-user \
+  -e WEBDAV_PASSWORD=storage-pass \
+  -e WEBDAV_CLEAR_STORAGE_ON_STARTUP=true \
+  -v "$(pwd)/data:/var/lib/webdav" \
+  temp-storage-nginx-webdav:test
+```
+
+This removes all files and directories under the storage root during container startup, while keeping the storage root directory itself.
+
 If you are using a SELinux-enabled environment, add `:Z` to the bind mount as needed:
 
 ```bash
